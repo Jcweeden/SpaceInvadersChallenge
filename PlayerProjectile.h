@@ -8,6 +8,7 @@
 #include "Saucer.h"
 #include "Barricade.h"
 
+#include "SoundMixer.h";
 
 #include "Invaders.h"
 #include "Vector2D.h"

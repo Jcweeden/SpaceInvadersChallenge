@@ -31,6 +31,7 @@ public:
   void clean();
 
   void initText();
+  void loadSounds();
 
   void setupLevel();
   void lostGame();
@@ -58,6 +59,8 @@ public:
   unsigned timeBetweenInvadersMove;
   unsigned lastFrameTicks;
 
+  int songNote;
+  
 private:
 
   static PlayState* s_pInstance;

@@ -6,6 +6,8 @@
 #include "Game.h"
 #include "Vector2D.h"
 
+#include "SoundMixer.h";
+
 #include <vector>
 #include <iostream>
 

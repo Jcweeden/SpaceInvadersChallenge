@@ -83,6 +83,7 @@ Vector2D Barricade::checkForCollisions(GameObject* bullet)
 
 void Barricade::clean()
 {
+  std::cout << "cleaning\n";
   for (size_t y = 0; y < 6; y++)
   {
     for (size_t x = 0; x < 9; x++)
@@ -93,4 +94,5 @@ void Barricade::clean()
       }
     }
   }
+  std::cout << "cleaned\n";
 }

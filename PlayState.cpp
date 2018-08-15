@@ -19,10 +19,11 @@ PlayState* PlayState::Instance()
 }
 
 PlayState::PlayState() //1000 in ms
-    : score(0), highScore(0), player(nullptr), invaders(nullptr), levelNumber(1), timeBetweenInvadersMove(1000), lastFrameTicks(0), gameOver(false), playerMovementDisabled(false)
+    : score(0), highScore(0), player(nullptr), invaders(nullptr), levelNumber(1), timeBetweenInvadersMove(1000), lastFrameTicks(0), gameOver(false), playerMovementDisabled(false), songNote(0)
 {
 
   initText();
+  loadSounds();
   
   TheTextureManager::Instance()->load("Assets/spaceInvaderSprites.png", "spaceInvaders", TheGame::Instance()->getRenderer());
   TheTextureManager::Instance()->load("Assets/barricade.png", "barricade", TheGame::Instance()->getRenderer());
@@ -84,6 +85,25 @@ void PlayState::update()
       invaders->moveInvaders();
 
     countDownTimerToNextInvadersMove = timeBetweenInvadersMove;
+
+    switch (songNote)
+    {
+      case 0:
+        TheSoundMixer::Instance()->playSound("songNote0",0);
+        break;
+      case 1:
+        TheSoundMixer::Instance()->playSound("songNote1",0);
+        break;
+      case 2:
+        TheSoundMixer::Instance()->playSound("songNote2",0);
+        break;
+      case 3:
+        TheSoundMixer::Instance()->playSound("songNote3",0);
+        break;
+    }
+
+    songNote++;
+    if (songNote > 3) songNote = 0;
   }
   player->update();
   
@@ -153,6 +173,8 @@ void PlayState::clean()
       delete barricades[i];
     }
   }
+    barricades.clear();
+
   
   //text
   /*
@@ -254,4 +276,18 @@ void PlayState::initText()
   highscoreLabelRect.y = 15;
   highscoreLabelRect.w = 180;
   highscoreLabelRect.h = 30;
+}
+
+void PlayState::loadSounds()
+{
+  TheSoundMixer::Instance()->load("Assets/audio/shoot.wav", "shoot", SOUND_SFX);
+  TheSoundMixer::Instance()->load("Assets/audio/killedEnemy.wav", "killedEnemy", SOUND_SFX);
+  TheSoundMixer::Instance()->load("Assets/audio/playerKilled.wav", "playerKilled", SOUND_SFX);
+  TheSoundMixer::Instance()->load("Assets/audio/ufo.wav", "ufo", SOUND_SFX);
+
+  TheSoundMixer::Instance()->load("Assets/audio/songNote0.wav", "songNote0", SOUND_SFX);
+  TheSoundMixer::Instance()->load("Assets/audio/songNote1.wav", "songNote1", SOUND_SFX);
+  TheSoundMixer::Instance()->load("Assets/audio/songNote2.wav", "songNote2", SOUND_SFX);
+  TheSoundMixer::Instance()->load("Assets/audio/songNote3.wav", "songNote3", SOUND_SFX);
+
 }

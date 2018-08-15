@@ -82,6 +82,8 @@ void Invaders::update()
           saucer = new Saucer(512, 120, true);
         else
           saucer = new Saucer(-32, 120, false);
+
+        TheSoundMixer::Instance()->playSound("ufo",0);
       }
     }
   }

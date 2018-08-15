@@ -48,7 +48,11 @@ void Player::handleInput()
   if (TheInputHandler::Instance()->getIsSpaceKeyPressed())
   {
     //shoot if no existing bullet
-    if (bullet == nullptr) bullet = new PlayerProjectile(GameObject::position.getX(), GameObject::position.getY());
+    if (bullet == nullptr)
+    {
+      bullet = new PlayerProjectile(GameObject::position.getX(), GameObject::position.getY());
+      TheSoundMixer::Instance()->playSound("shoot",0);
+    }
   }
 
   if (GameObject::position.getX() < 432 &&

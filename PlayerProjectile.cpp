@@ -37,9 +37,7 @@ void PlayerProjectile::checkForCollisions()
       Vector2D hitPos = ThePlayState::Instance()->barricades[i]->checkForCollisions(this);
 
       if (hitPos.getY() != 0)
-      {
-        std::cout << "collision\n";
-        
+      {        
         //set bullet to blown up sprite
         setRow(5); setFrame(1);
 
@@ -51,8 +49,6 @@ void PlayerProjectile::checkForCollisions()
 
         //set proj to be deleted
         deletionTimer = SDL_GetTicks();
-
-        std::cout << "completed collision\n";
 
         //no further collisions
         return;
@@ -66,7 +62,7 @@ void PlayerProjectile::checkForCollisions()
     //check coll with it
     if (TheCollManager::Instance()->isCollidingBulletSaucer(this, ThePlayState::Instance()->invaders->saucer))
     {
-      //enemyHit = ThePlayState::Instance()->invaders->saucer;
+      TheSoundMixer::Instance()->playSound("killedEnemy",0);
 
       //set bullet to blown up sprite
       setRow(5); setFrame(1);
@@ -144,6 +140,8 @@ void PlayerProjectile::checkForCollisions()
 
             //set proj to be deleted
             deletionTimer = SDL_GetTicks();
+
+            TheSoundMixer::Instance()->playSound("killedEnemy",0);
           }
       }
     }

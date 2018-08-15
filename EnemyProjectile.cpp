@@ -90,6 +90,9 @@ void EnemyProjectile::checkForCollisions()
     //set proj to be deleted
     deletionTimer = SDL_GetTicks();
 
+    TheSoundMixer::Instance()->playSound("playerKilled",0);
+
+    
     std::cout << "collided with player fine\n";
   }
 }

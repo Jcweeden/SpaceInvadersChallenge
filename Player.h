@@ -8,6 +8,9 @@
 #include "InputHandler.h"
 #include "PlayerProjectile.h";
 
+#include "SoundMixer.h";
+
+
 #include <iostream>
 
 class Player : public GameObject {
