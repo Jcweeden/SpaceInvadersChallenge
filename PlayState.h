@@ -29,11 +29,19 @@ public:
   void handleInput();
 
   void clean();
+
+  void setupLevel();
   
 public:
 
+  unsigned levelNumber;
+  
   Player* player;
   Invaders* invaders;
+
+  int countDownTimerToNextInvadersMove;
+  unsigned timeBetweenInvadersMove;
+  unsigned lastFrameTicks;
 
 private:
 

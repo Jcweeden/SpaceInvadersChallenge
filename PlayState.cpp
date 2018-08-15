@@ -18,21 +18,37 @@ PlayState* PlayState::Instance()
   return s_pInstance;
 }
 
-PlayState::PlayState()
-    // :
+PlayState::PlayState() //1000 in ms
+    : player(nullptr), invaders(nullptr), levelNumber(1), timeBetweenInvadersMove(1000), lastFrameTicks(0)
 {
-  std::cout << "run\n";
-
   TheTextureManager::Instance()->load("Assets/spaceInvaderSprites.png", "spaceInvaders", TheGame::Instance()->getRenderer());
-  
-  player = new Player(32,400,1,9,0);
-  invaders = new Invaders(1);
+
+  setupLevel();
+}
+
+void PlayState::setupLevel()
+{
+  clean();
+  player = new Player(32,450,1,9,0);
+  invaders = new Invaders(levelNumber, player->getPosition().getY());
+  countDownTimerToNextInvadersMove = timeBetweenInvadersMove = 1000;
 }
 
 void PlayState::update()
 {
   invaders->update();
   player->update();
+
+  countDownTimerToNextInvadersMove -= SDL_GetTicks() - lastFrameTicks;
+  
+  //if has surpassed time
+  if (countDownTimerToNextInvadersMove <= 0)
+  {
+    invaders->moveInvaders();
+
+    countDownTimerToNextInvadersMove = timeBetweenInvadersMove;
+  }
+  lastFrameTicks = SDL_GetTicks();
 }
 
 void PlayState::render()
@@ -51,8 +67,11 @@ void PlayState::handleInput()
 
 void PlayState::clean()
 {
-  invaders->clean();
-  delete invaders;
+  if (invaders != nullptr)
+  {
+    invaders->clean();
+    delete invaders;
+  }
   
-  delete player;
+  if (player != nullptr) delete player;
 }
