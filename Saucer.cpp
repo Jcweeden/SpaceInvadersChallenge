@@ -11,12 +11,10 @@ Saucer::Saucer(int x, int y, bool p_moveLeft)
 
 void Saucer::update()
 {
-  std::cout << "X: " << getPosition().getX() << " Y: " << getPosition().getY() << "\n";
   if (!moveLeft)
   {
     if (getPosition().getX() > 512)
     {
-      std::cout << "saucer to be deleted RIGHT\n";
       toBeDeleted = true;
     }
   }
@@ -24,7 +22,6 @@ void Saucer::update()
   {
     if (getPosition().getX() < -32)
     {
-      std::cout << "saucer to be deleted LEFT\n";
       toBeDeleted = true;
     }
   }

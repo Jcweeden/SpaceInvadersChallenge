@@ -16,6 +16,7 @@
 class GameObject;
 class Player;
 class Invaders;
+class Barricade;
 
 class PlayState {
 
@@ -33,6 +34,8 @@ public:
 
   void setupLevel();
   void lostGame();
+  void nextLevel();
+
 
   void updateGameSpeed();
 
@@ -49,6 +52,7 @@ public:
   
   Player* player;
   Invaders* invaders;
+  std::vector<Barricade*> barricades;
 
   int countDownTimerToNextInvadersMove;
   unsigned timeBetweenInvadersMove;

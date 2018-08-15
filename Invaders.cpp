@@ -15,14 +15,14 @@ void Invaders::setupInvaders(unsigned startingRow)
 {
   //variables holding starting position of the swarm
   int startPosX = 90;
-  int startPosY = 185;
+  int startPosY = 169;
   
   //variables holding distance between each invader
   int distX = 32;
   int distY = 32;
 
   //add for each addition row down the spawn is starting at
-  startPosY += shiftDownBy * startingRow;
+  startPosY += shiftDownBy * (startingRow-1);
 
   //create and spawn invaders
   for (size_t y = 0; y < 5; y++)
@@ -53,30 +53,35 @@ void Invaders::initSaucer()
     //between 15 - 25 seconds
     countDownTimerToNextSaucer = rand() % 10 + 15;
     countDownTimerToNextSaucer *= 1000;
-    std::cout << "spawning saucer in " << countDownTimerToNextSaucer << "\n";
   }
 }
 
 void Invaders::update()
 {
+
+  if(numInvadersRemaining <= 0)
+  {
+    SDL_Delay(1000);
+    ThePlayState::Instance()->nextLevel();
+  }
+  else
+  {
   //saucer
   if (saucer == nullptr)
   {
     countDownTimerToNextSaucer -= SDL_GetTicks() - lastFrameTicks;
-    std::cout << "spawning saucer in " << countDownTimerToNextSaucer << "\n";
 
     if (countDownTimerToNextSaucer <= 0)
     {
       if (saucer == nullptr)
       {
-        std::cout << "spawning saucer\n";
         //random select whether to spawn on left or right side of screen
         int randSaucerIndex = rand() % 2;
 
         if (randSaucerIndex == 0)
-          saucer = new Saucer(512, 150, true);
+          saucer = new Saucer(512, 120, true);
         else
-          saucer = new Saucer(-32, 150, false);
+          saucer = new Saucer(-32, 120, false);
       }
     }
   }
@@ -124,6 +129,7 @@ void Invaders::update()
         }
       }
     }
+  }
   }
 }
 
@@ -252,6 +258,8 @@ void Invaders::checkIfShiftDown()
           if (invaders[x][y]->getPosition().getY() >= playerPosY)
           {
             //lose
+            SDL_Delay(1000);
+            ThePlayState::Instance()->gameOver = true;
             return;
           }
         }

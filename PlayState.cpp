@@ -3,7 +3,7 @@
 #include "Game.h"
 #include "Player.h"
 #include "Invaders.h"
-
+#include "Barricade.h"
 
 PlayState* PlayState::s_pInstance = 0;
 
@@ -25,6 +25,7 @@ PlayState::PlayState() //1000 in ms
   initText();
   
   TheTextureManager::Instance()->load("Assets/spaceInvaderSprites.png", "spaceInvaders", TheGame::Instance()->getRenderer());
+  TheTextureManager::Instance()->load("Assets/barricade.png", "barricade", TheGame::Instance()->getRenderer());
 
   setupLevel();
 }
@@ -39,6 +40,26 @@ void PlayState::setupLevel()
   player = new Player(80,441,1,9,0);
   invaders = new Invaders(levelNumber, player->getPosition().getY());
   countDownTimerToNextInvadersMove = timeBetweenInvadersMove = 1000;
+
+  Barricade* barricade0 = new Barricade(100,390);
+  barricades.push_back(barricade0);
+  Barricade* barricade1 = new Barricade(200,390);
+  barricades.push_back(barricade1);
+  Barricade* barricade2 = new Barricade(300,390);
+  barricades.push_back(barricade2);
+  Barricade* barricade3 = new Barricade(400,390);
+  barricades.push_back(barricade3);
+}
+
+void PlayState::nextLevel()
+{
+  levelNumber++;
+  gameOver = false;
+  playerMovementDisabled = false;
+  clean();
+  player = new Player(80,441,1,9,0);
+  invaders = new Invaders(levelNumber, player->getPosition().getY());
+  countDownTimerToNextInvadersMove = timeBetweenInvadersMove = 1000; 
 }
 
 void PlayState::lostGame()
@@ -89,6 +110,11 @@ void PlayState::render()
   if (player != nullptr)
     player->draw();
 
+  for (size_t i = 0 ; i < barricades.size(); i++)
+  {
+    if (barricades[i] != nullptr) barricades[i]->draw();
+  }
+  
   //text
 
   SDL_RenderCopy(TheGame::Instance()->getRenderer(), scoreLabelText, NULL, &scoreLabelRect); 
@@ -118,6 +144,11 @@ void PlayState::clean()
     delete player;
   }
 
+  for (size_t i = 0 ; i < barricades.size(); i++)
+  {
+    if (barricades[i] != nullptr) delete barricades[i];
+  }
+  
   //text
   /*
   if( scoreText != NULL ) SDL_DestroyTexture( scoreText );
@@ -137,6 +168,8 @@ void PlayState::updateGameSpeed()
 void PlayState::addScore(unsigned val)
 {
   score += val;
+
+  //every 1500 give new life
 
   if( scoreText != NULL ) SDL_DestroyTexture( scoreText );
   
