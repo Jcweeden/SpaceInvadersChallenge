@@ -2,7 +2,7 @@
 
 
 Player::Player(int x, int y, unsigned p_numFrames, unsigned p_currentRow, unsigned p_currentFrame)
-    : GameObject::GameObject(x,y,32,32,"spaceInvaders",p_numFrames,p_currentRow,p_currentFrame)
+    : GameObject::GameObject(x,y,32,32,"spaceInvaders",p_numFrames,p_currentRow,p_currentFrame), bullet(nullptr)
 {
 
 }
@@ -10,14 +10,26 @@ Player::Player(int x, int y, unsigned p_numFrames, unsigned p_currentRow, unsign
 void Player::update()
 {
 
+  if (bullet != nullptr)
+  {
+    bullet->update();
+
+    if (bullet->toBeDeleted)
+    {
+      delete bullet;
+      bullet = nullptr;
+    }
+  }
+  
   GameObject::update();
 
-    velocity.setX(0.0f);
-
+  velocity.setX(0.0f);
 }
 
 void Player::draw()
 {
+  if (bullet != nullptr) bullet->draw();
+  
   GameObject::draw();
 
 }
@@ -26,7 +38,8 @@ void Player::handleInput()
 {
   if (TheInputHandler::Instance()->getIsSpaceKeyPressed())
   {
-    //shoot
+    //shoot if no existing bullet
+    if (bullet == nullptr) bullet = new PlayerProjectile(GameObject::position.getX(), GameObject::position.getY());
   }
 
   if (GameObject::position.getX() < 480 &&
