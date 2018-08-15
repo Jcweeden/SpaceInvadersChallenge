@@ -1,12 +1,12 @@
 #include "Invaders.h"
 #include "EnemyProjectile.h"
 #include "Player.h"
+#include "Saucer.h"
 
 
 Invaders::Invaders(unsigned rowNumber, unsigned playerY)
-    :shiftDownBy(16), shiftSidewaysBy(8), moveLeft(false), numInvadersRemaining(55), numSurvivingInEachCol(11, 5), invaderBoundaryLeft(32), invaderBoundaryRight(480), playerPosY(playerY)
+    :shiftDownBy(16), shiftSidewaysBy(8), moveLeft(false), numInvadersRemaining(55), numSurvivingInEachCol(11, 5), invaderBoundaryLeft(32), invaderBoundaryRight(480), playerPosY(playerY), saucer(nullptr), countDownTimerToNextSaucer(10000), lastFrameTicks(0)
 {
-
   invaders = std::vector<std::vector<Enemy*> > (11, std::vector<Enemy*>(5));
   setupInvaders(rowNumber);
 }
@@ -14,8 +14,8 @@ Invaders::Invaders(unsigned rowNumber, unsigned playerY)
 void Invaders::setupInvaders(unsigned startingRow)
 {
   //variables holding starting position of the swarm
-  int startPosX = 96;
-  int startPosY = 160;
+  int startPosX = 90;
+  int startPosY = 185;
   
   //variables holding distance between each invader
   int distX = 32;
@@ -41,10 +41,59 @@ void Invaders::setupInvaders(unsigned startingRow)
       invaders[x][y] = newInvader;
     }
   }
+
+  //init the saucer to spawn in a random time
+  initSaucer();
+}
+
+void Invaders::initSaucer()
+{
+  if (saucer == nullptr)
+  {
+    //between 15 - 25 seconds
+    countDownTimerToNextSaucer = rand() % 10 + 15;
+    countDownTimerToNextSaucer *= 1000;
+    std::cout << "spawning saucer in " << countDownTimerToNextSaucer << "\n";
+  }
 }
 
 void Invaders::update()
 {
+  //saucer
+  if (saucer == nullptr)
+  {
+    countDownTimerToNextSaucer -= SDL_GetTicks() - lastFrameTicks;
+    std::cout << "spawning saucer in " << countDownTimerToNextSaucer << "\n";
+
+    if (countDownTimerToNextSaucer <= 0)
+    {
+      if (saucer == nullptr)
+      {
+        std::cout << "spawning saucer\n";
+        //random select whether to spawn on left or right side of screen
+        int randSaucerIndex = rand() % 2;
+
+        if (randSaucerIndex == 0)
+          saucer = new Saucer(512, 150, true);
+        else
+          saucer = new Saucer(-32, 150, false);
+      }
+    }
+  }
+  else
+  {
+    saucer->update();
+    if (saucer->toBeDeleted)
+    {
+      delete saucer;
+      saucer = nullptr;
+      initSaucer();
+    }
+  }
+
+  lastFrameTicks = SDL_GetTicks();
+
+  //shooting of invaders
   if (numInvadersRemaining > 0 )
   {
     if (enemyBullets.size() == 0)
@@ -80,7 +129,10 @@ void Invaders::update()
 
 void Invaders::draw()
 {
-  //update bullets
+  //saucer
+  if (saucer != nullptr) saucer->draw();
+  
+  //draw bullets
   for (EnemyProjectile* proj : enemyBullets)
   {
     proj->draw();
@@ -101,8 +153,6 @@ void Invaders::clean()
   {
     delete enemyBullets[i];
   }
-
-
   
   for (size_t y = 0; y < 5; y++)
   {
@@ -111,6 +161,8 @@ void Invaders::clean()
       if (invaders[x][y] != nullptr) delete invaders[x][y];
     }
   }
+
+  if (saucer != nullptr) delete saucer;
 }
 
 

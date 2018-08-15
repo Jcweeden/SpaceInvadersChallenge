@@ -27,8 +27,9 @@ public:
   void update();
   void render();
   void handleInput();
-
   void clean();
+
+  void initText();
 
   void setupLevel();
   void lostGame();
@@ -36,6 +37,8 @@ public:
   void updateGameSpeed();
 
   void addScore(unsigned val);
+  void updateHighScoreText();
+  
 public:
 
   bool gameOver;
@@ -55,6 +58,27 @@ private:
 
   static PlayState* s_pInstance;
 
+
+  //text
+  TTF_Font* fontTTF;
+  SDL_Color textColour = {255,255,255};
+
+  SDL_Surface* scoreMessage;
+  SDL_Texture* scoreText; 
+  SDL_Rect scoreRect;
+
+  SDL_Surface* scoreLabelMessage;
+  SDL_Texture* scoreLabelText; 
+  SDL_Rect scoreLabelRect;
+
+  SDL_Surface* highscoreMessage;
+  SDL_Texture* highscoreText; 
+  SDL_Rect highscoreRect;
+
+  SDL_Surface* highscoreLabelMessage;
+  SDL_Texture* highscoreLabelText; 
+  SDL_Rect highscoreLabelRect;
+  
 };
 
 typedef PlayState ThePlayState;

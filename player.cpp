@@ -51,17 +51,17 @@ void Player::handleInput()
     if (bullet == nullptr) bullet = new PlayerProjectile(GameObject::position.getX(), GameObject::position.getY());
   }
 
-  if (GameObject::position.getX() < 480 &&
+  if (GameObject::position.getX() < 432 &&
       TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_RIGHT))
   {
     //move right
-    velocity.setX(1.0f);
+    velocity.setX(1.8f);
   }
 
-  if (GameObject::position.getX() > 32 &&
+  if (GameObject::position.getX() > 80 &&
       TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_LEFT))
   {
     //move left
-    velocity.setX(-1.0f);
+    velocity.setX(-1.8f);
   }
 }

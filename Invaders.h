@@ -11,6 +11,7 @@
 
 class EnemyProjectile;
 class Player;
+class Saucer;
 
 class Invaders {
 public:
@@ -29,21 +30,23 @@ public:
 
   Enemy* getBottomInvaderInColumn(unsigned colIndex);
 
-
   void shoot(unsigned colIndexToShootFrom);
   void shootFromRandomColumn();
   void shootAtPlayer();
+
+  void initSaucer();
   
 public:
 
   std::vector<std::vector<Enemy*> > invaders;
-
   std::vector<EnemyProjectile*> enemyBullets;
   
   std::vector<int> numSurvivingInEachCol;
   
   unsigned numInvadersRemaining;
 
+  Saucer* saucer;
+  
   //shiftDownBy is val invaders will shift down once reaching edge of screen
   unsigned shiftDownBy;
   
@@ -57,6 +60,10 @@ public:
 
   //players position that if reached you lose
   unsigned playerPosY;
+
+
+  int countDownTimerToNextSaucer;
+  int lastFrameTicks;
 };
 
 #endif

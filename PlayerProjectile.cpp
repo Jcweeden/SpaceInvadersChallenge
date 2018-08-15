@@ -30,36 +30,45 @@ void PlayerProjectile::checkForCollisions()
 {
   GameObject* enemyHit = nullptr;
 
-  /*
+  
   //if enemy saucer
   if (ThePlayState::Instance()->invaders->saucer != nullptr)
   {
     //check coll with it
-    if (TheCollManager::Instance()->isCollidingBulletInvader(this, ThePlayState::Instance()->invaders->saucer))
+    if (TheCollManager::Instance()->isCollidingBulletSaucer(this, ThePlayState::Instance()->invaders->saucer))
     {
-      enemyHit = ThePlayState::Instance()->invaders->saucer;
+      //enemyHit = ThePlayState::Instance()->invaders->saucer;
 
       //set bullet to blown up sprite
       setRow(5); setFrame(1);
 
       //set to pos of enemy
-      setPosition(Vector2D(ThePlayState::Instance()->invaders->invaders[x][y]->getPosition().getX(),
-                           ThePlayState::Instance()->invaders->invaders[x][y]->getPosition().getY()));
+      setPosition(Vector2D(ThePlayState::Instance()->invaders->saucer->getPosition().getX(),
+                           ThePlayState::Instance()->invaders->saucer->getPosition().getY()));
           
       //stop moving           
       velocity.setY(0);
 
       //increase score
+      int randSaucerIndex = rand() % 4;
 
+      if (randSaucerIndex == 0)
+        ThePlayState::Instance()->addScore(50);
+      else if (randSaucerIndex == 1)
+        ThePlayState::Instance()->addScore(100);
+      else if (randSaucerIndex == 2)
+        ThePlayState::Instance()->addScore(150);
+      else if (randSaucerIndex == 3)
+        ThePlayState::Instance()->addScore(300);
+        
       //delete enemy
-      delete ThePlayState::Instance()->invaders->saucer;
-      ThePlayState::Instance()->invaders->saucer = nullptr;
+      ThePlayState::Instance()->invaders->saucer->toBeDeleted = true;
 
       //set proj to be deleted
       deletionTimer = SDL_GetTicks();
     }
   }
-  */
+  
   
   //if have not hit saucer
   if (enemyHit == nullptr)

@@ -15,10 +15,10 @@ void EnemyProjectile::update()
   if (position.getY() > 460 && deletionTimer <= 0)
   {
     //is now out of bounds
-    deletionTimer = SDL_GetTicks();
+    deletionTimer = SDL_GetTicks() - 300;
 
     //blow up
-    setRow(5); setFrame(1);
+    setRow(5); setFrame(1); setAnimationSpeed(350);
 
     velocity.setY(0);
   }

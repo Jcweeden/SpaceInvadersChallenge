@@ -2,7 +2,7 @@
 #define _CollisionManager_
 
 class GameObject;
-
+class Saucer;
 class CollisionManager {
 
 public:
@@ -13,7 +13,9 @@ public:
     bool isCollidingRectRect(GameObject* rectA, GameObject* rectB, int buffer);
 
     bool isCollidingBulletInvader(GameObject* rectA, GameObject* rectB);
-    
+
+    bool isCollidingBulletSaucer(GameObject* rectA, Saucer* rectB);
+
 private:
     static CollisionManager* s_pInstance;
 };
