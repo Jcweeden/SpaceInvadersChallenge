@@ -95,3 +95,29 @@ bool CollisionManager::isCollidingBulletSaucer(GameObject* rectA, Saucer* rectB)
   //else, a collision
   return true;
 }
+
+bool CollisionManager::isCollidingBulletBlock(GameObject* rectA, GameObject* rectB)
+{
+  std::cout << rectA->getPosition().getY() << " + " << rectA->getHeight() <<
+      " <= " << rectB->getPosition().getY() << "\n";
+
+  //if the bottom of rectA is lower than the top of rectB - no collision
+  if((rectA->getPosition().getY() + rectA->getHeight()) <= rectB->getPosition().getY())
+  { return false; }
+    
+  //if the top of rectA is higher than the bottom of rectB - no collision
+  if(rectA->getPosition().getY() >= (rectB->getPosition().getY() + rectB->getHeight()))
+  { return false; }
+    
+  //if the right of rectA does not meet the left of rectB - no collision
+  if((rectA->getPosition().getX() + rectA->getWidth()) <= 23 + rectB->getPosition().getX())
+  { return false; }
+    
+  //if the left of rectA is further away than the right of rectB - no collision
+  if(rectA->getPosition().getX()  >= (rectB->getPosition().getX() + rectB->getWidth()))
+  { return false; }
+    
+  //else, a collision
+  return true;
+}
+    

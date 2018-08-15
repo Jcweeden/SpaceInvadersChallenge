@@ -16,6 +16,8 @@ public:
 
     bool isCollidingBulletSaucer(GameObject* rectA, Saucer* rectB);
 
+    bool isCollidingBulletBlock(GameObject* rectA, GameObject* rectB);
+
 private:
     static CollisionManager* s_pInstance;
 };

@@ -6,6 +6,7 @@
 #include "Projectile.h"
 #include "Game.h"
 #include "Saucer.h"
+#include "Barricade.h"
 
 
 #include "Invaders.h"

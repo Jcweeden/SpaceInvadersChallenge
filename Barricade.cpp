@@ -52,3 +52,45 @@ void Barricade::draw()
     }
   }
 }
+
+Vector2D Barricade::checkForCollisions(GameObject* bullet)
+{
+  //std::cout << "checking block cols\n";
+  for (size_t y = 0; y < 6; y++)
+  {
+    for (size_t x = 0; x < 9; x++)
+    {
+      if (blocks[x][y] != nullptr)
+      {
+        if (TheCollManager::Instance()->isCollidingBulletBlock(bullet, blocks[x][y]))
+        {
+          //return position of block for bullet to animate on
+          Vector2D hitPos = Vector2D(blocks[x][y]->getPosition().getX(),
+                                     blocks[x][y]->getPosition().getY());
+          //delete block
+          delete blocks[x][y];
+          blocks[x][y] = nullptr;
+          
+          std::cout << "returning hitPos\n";
+          return hitPos;
+        }
+      }
+    }
+  }
+}
+
+
+
+void Barricade::clean()
+{
+  for (size_t y = 0; y < 6; y++)
+  {
+    for (size_t x = 0; x < 9; x++)
+    {
+      if (blocks[x][y] != nullptr)
+      {
+        delete blocks[x][y];
+      }
+    }
+  }
+}

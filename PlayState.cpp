@@ -136,6 +136,7 @@ void PlayState::clean()
   {
     invaders->clean();
     delete invaders;
+    
   }
   
   if (player != nullptr)
@@ -146,7 +147,11 @@ void PlayState::clean()
 
   for (size_t i = 0 ; i < barricades.size(); i++)
   {
-    if (barricades[i] != nullptr) delete barricades[i];
+    if (barricades[i] != nullptr)
+    {
+      barricades[i]->clean();
+      delete barricades[i];
+    }
   }
   
   //text
