@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "Player.h"
+#include "Invaders.h"
 
 
 PlayState* PlayState::s_pInstance = 0;
@@ -25,15 +26,18 @@ PlayState::PlayState()
   TheTextureManager::Instance()->load("Assets/spaceInvaderSprites.png", "spaceInvaders", TheGame::Instance()->getRenderer());
   
   player = new Player(32,400,1,9,0);
+  invaders = new Invaders(1);
 }
 
 void PlayState::update()
 {
+  invaders->update();
   player->update();
 }
 
 void PlayState::render()
 {
+  invaders->draw();
   player->draw();
 }
 
@@ -47,7 +51,8 @@ void PlayState::handleInput()
 
 void PlayState::clean()
 {
-
-  delete player;
+  invaders->clean();
+  delete invaders;
   
+  delete player;
 }

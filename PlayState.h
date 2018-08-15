@@ -15,6 +15,7 @@
 
 class GameObject;
 class Player;
+class Invaders;
 
 class PlayState {
 
@@ -32,7 +33,7 @@ public:
 public:
 
   Player* player;
-
+  Invaders* invaders;
 
 private:
 
