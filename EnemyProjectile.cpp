@@ -2,9 +2,10 @@
 #include "Player.h"
 
 EnemyProjectile::EnemyProjectile(int x, int y)
-    :Projectile(x,y,1,10,0,2.0f), toBeDeleted(false), deletionTimer(0), hitPlayer(false)
+    :Projectile(x,y,2,10,0,2.0f), toBeDeleted(false), deletionTimer(0), hitPlayer(false)
 {
   //randomly selects missile type
+  currentRow = rand() % 3 + 6;
 }
 
 void EnemyProjectile::update()
@@ -25,10 +26,10 @@ void EnemyProjectile::update()
   {
     checkForCollisions();
   }
-  else if (deletionTimer+1000 > SDL_GetTicks())
+  else if (SDL_GetTicks() > deletionTimer + 700)
   {
     toBeDeleted = true;
-    if (hitPlayer) ThePlayState::Instance()->lostGame();
+    if (hitPlayer) ThePlayState::Instance()->gameOver = true;
   }
   
 }
@@ -40,7 +41,7 @@ void EnemyProjectile::checkForCollisions()
   if (TheCollManager::Instance()->isCollidingBulletInvader(this, ThePlayState::Instance()->player))
   {
     //update to stop player movement
-    ThePlayState::Instance()->gameOver = true;
+    ThePlayState::Instance()->playerMovementDisabled = true;
     
     //set player to blown up player sprite
     ThePlayState::Instance()->player->setRow(11);

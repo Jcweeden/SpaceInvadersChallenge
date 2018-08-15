@@ -39,6 +39,7 @@ public:
 public:
 
   bool gameOver;
+  bool playerMovementDisabled;
   unsigned levelNumber;
   unsigned score;
   unsigned highScore;

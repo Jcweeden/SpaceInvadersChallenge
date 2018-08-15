@@ -1,5 +1,6 @@
 #include "Invaders.h"
 #include "EnemyProjectile.h"
+#include "Player.h"
 
 
 Invaders::Invaders(unsigned rowNumber, unsigned playerY)
@@ -259,5 +260,37 @@ void Invaders::shootFromRandomColumn()
 
 void Invaders::shootAtPlayer()
 {
+  unsigned firstSurvivingColumn = 0;
 
+  //find first col with invaders in it
+  while (true)
+  {
+    if (numSurvivingInEachCol[firstSurvivingColumn] > 0)
+      break; //found a col with invaders
+    else
+      firstSurvivingColumn++; //iterate and try again
+  }
+  //get x pos of first col with invaders in it
+  unsigned xPos = getBottomInvaderInColumn(firstSurvivingColumn)->getPosition().getX();
+  //get player x
+  unsigned playerXPos = ThePlayState::Instance()->player->getPosition().getX();
+
+  //calc number of rows difference between the two
+  unsigned diffX = (playerXPos - xPos) / 32;
+
+  //if within row boundaries, and there is an invader in selected row
+  if (diffX >= 0 && diffX <= 10)
+  {
+    if (numSurvivingInEachCol[diffX] > 0)
+    {
+      shoot(diffX);
+      return;
+    }
+  }
+  else
+  {
+    shootFromRandomColumn();
+  }
+
+  //shoot from it
 }

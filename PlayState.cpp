@@ -19,7 +19,7 @@ PlayState* PlayState::Instance()
 }
 
 PlayState::PlayState() //1000 in ms
-    : score(0), highScore(0), player(nullptr), invaders(nullptr), levelNumber(1), timeBetweenInvadersMove(1000), lastFrameTicks(0), gameOver(false)
+    : score(0), highScore(0), player(nullptr), invaders(nullptr), levelNumber(1), timeBetweenInvadersMove(1000), lastFrameTicks(0), gameOver(false), playerMovementDisabled(false)
 {
   TheTextureManager::Instance()->load("Assets/spaceInvaderSprites.png", "spaceInvaders", TheGame::Instance()->getRenderer());
 
@@ -28,19 +28,17 @@ PlayState::PlayState() //1000 in ms
 
 void PlayState::setupLevel()
 {
-  std::cout << "setupLevel()\n";
   gameOver = false;
+  playerMovementDisabled = false;
   score = 0;
   clean();
   player = new Player(32,450,1,9,0);
   invaders = new Invaders(levelNumber, player->getPosition().getY());
   countDownTimerToNextInvadersMove = timeBetweenInvadersMove = 1000;
-  std::cout << "setupLevel() complete\n";
 }
 
 void PlayState::lostGame()
 {
-  std::cout << "lostGame()\n";
   if (score > highScore) highScore = score;
   levelNumber = 1;
   setupLevel();
@@ -48,27 +46,24 @@ void PlayState::lostGame()
 
 void PlayState::update()
 {
-  std::cout << "update()\n";
+  if (gameOver)
+    lostGame();
   
   countDownTimerToNextInvadersMove -= SDL_GetTicks() - lastFrameTicks;
   
   //if has surpassed time
   if (countDownTimerToNextInvadersMove <= 0)
   {
-    if (!gameOver && invaders != nullptr)
+    if (!gameOver)
       invaders->moveInvaders();
 
     countDownTimerToNextInvadersMove = timeBetweenInvadersMove;
   }
-
-  if (invaders != nullptr)
+  player->update();
+  
   invaders->update();
   
-  if (player != nullptr)
-    player->update();
-  
   lastFrameTicks = SDL_GetTicks();
-  std::cout << "update() complete\n";
 }
 
 void PlayState::render()
@@ -77,13 +72,13 @@ void PlayState::render()
     invaders->draw();
 
   if (player != nullptr)
-  player->draw();
+    player->draw();
 }
 
 
 void PlayState::handleInput()
 {
-  if (!gameOver)
+  if (!playerMovementDisabled)
     player->handleInput();
 }
 

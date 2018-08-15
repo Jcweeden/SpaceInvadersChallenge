@@ -10,6 +10,7 @@
 #include <iostream>
 
 class EnemyProjectile;
+class Player;
 
 class Invaders {
 public:
