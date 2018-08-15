@@ -102,7 +102,7 @@ bool CollisionManager::isCollidingBulletBlock(GameObject* rectA, GameObject* rec
       " <= " << rectB->getPosition().getY() << "\n";
 
   //if the bottom of rectA is lower than the top of rectB - no collision
-  if((rectA->getPosition().getY() + rectA->getHeight()) <= rectB->getPosition().getY())
+  if((rectA->getPosition().getY() + rectA->getHeight()) <= 25 +rectB->getPosition().getY())
   { return false; }
     
   //if the top of rectA is higher than the bottom of rectB - no collision

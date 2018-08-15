@@ -37,6 +37,37 @@ void EnemyProjectile::update()
 void EnemyProjectile::checkForCollisions()
 {
 
+
+  if (position.getY() > 0)
+  {
+    for (size_t i = 0; i < ThePlayState::Instance()->barricades.size(); i++)
+    {
+      Vector2D hitPos = ThePlayState::Instance()->barricades[i]->checkForCollisions(this);
+
+      if (hitPos.getY() != 0)
+      {
+        std::cout << "collision\n";
+        
+        //set bullet to blown up sprite
+        setRow(5); setFrame(1);
+
+        //set position to block
+        setPosition(hitPos);
+
+        //stop moving           
+        velocity.setY(0);
+
+        //set proj to be deleted
+        deletionTimer = SDL_GetTicks();
+
+        std::cout << "completed collision\n";
+
+        //no further collisions
+        return;
+      }
+    }
+  }
+  
   //check against player
   if (TheCollManager::Instance()->isCollidingBulletInvader(this, ThePlayState::Instance()->player))
   {
