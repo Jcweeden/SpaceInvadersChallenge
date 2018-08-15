@@ -7,6 +7,8 @@
 
 #include "TextureManager.h"
 
+#include "PlayState.h"
+
 #include <iostream>
 #include <vector>
 

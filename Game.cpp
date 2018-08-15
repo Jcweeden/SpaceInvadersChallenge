@@ -58,6 +58,10 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
   std::cout << "Game: Init success\n";
   m_bRunning = true;//start the main loop
 
+
+  //create new playstate instance
+  ThePlayState::Instance();
+  
   return true;
 }
 
@@ -67,7 +71,7 @@ void Game::render()
   SDL_SetRenderDrawColor(m_pRenderer, 0, 0, 0, 0xFF); 
   SDL_RenderClear(m_pRenderer); // clear the renderer to the draw colour
 
-  //render here
+  ThePlayState::Instance()->render();
   
   SDL_RenderPresent(m_pRenderer);  //draw to the screen
 }
@@ -75,7 +79,7 @@ void Game::render()
 void Game::update() {
 
   //update state here
-  
+  ThePlayState::Instance()->update();
 }
 
 void Game::clean() {
@@ -83,6 +87,7 @@ void Game::clean() {
 
 
   //clean here
+  ThePlayState::Instance()->clean();
 
   TheInputHandler::Instance()->clean();
   
@@ -96,6 +101,7 @@ void Game::handleEvents()
   TheInputHandler::Instance()->update();
 
   //handle input here
+  ThePlayState::Instance()->handleInput();
   
 }
 

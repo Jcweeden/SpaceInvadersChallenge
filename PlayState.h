@@ -31,9 +31,15 @@ public:
   
 public:
 
-  //Player* player;
-  
+  Player* player;
+
+
+private:
+
+  static PlayState* s_pInstance;
 
 };
+
+typedef PlayState ThePlayState;
 
 #endif
