@@ -5,7 +5,11 @@
 #include "GameObject.h"
 #include "Projectile.h"
 #include "Game.h"
+
+
+#include "Invaders.h"
 #include "Vector2D.h"
+#include "CollisionManager.h"
 
 #include <iostream>
 
@@ -19,10 +23,14 @@ public:
   void update();
 
   //no need for draw
+
+  void checkForCollisions();
   
 public:
 
   bool toBeDeleted;
+
+  unsigned deletionTimer;
 
 };
 

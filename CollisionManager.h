@@ -12,6 +12,8 @@ public:
     //returns true if two rectangles are colliding
     bool isCollidingRectRect(GameObject* rectA, GameObject* rectB, int buffer);
 
+    bool isCollidingBulletInvader(GameObject* rectA, GameObject* rectB);
+    
 private:
     static CollisionManager* s_pInstance;
 };

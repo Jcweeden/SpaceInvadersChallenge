@@ -19,7 +19,7 @@ PlayState* PlayState::Instance()
 }
 
 PlayState::PlayState() //1000 in ms
-    : player(nullptr), invaders(nullptr), levelNumber(1), timeBetweenInvadersMove(1000), lastFrameTicks(0)
+    : score(0), player(nullptr), invaders(nullptr), levelNumber(1), timeBetweenInvadersMove(1000), lastFrameTicks(0)
 {
   TheTextureManager::Instance()->load("Assets/spaceInvaderSprites.png", "spaceInvaders", TheGame::Instance()->getRenderer());
 
@@ -75,3 +75,16 @@ void PlayState::clean()
   
   if (player != nullptr) delete player;
 }
+
+
+void PlayState::updateGameSpeed()
+{
+  timeBetweenInvadersMove = 50 + (950 / 55) * (invaders->numInvadersRemaining + invaders->numInvadersRemaining/5);
+}
+
+
+void PlayState::addScore(unsigned val)
+{
+  score += val;
+}
+

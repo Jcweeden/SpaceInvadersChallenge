@@ -34,7 +34,8 @@ public:
   int getFrame() { return currentFrame;}
 
   void setRow(int row) { currentRow = row;}
-  
+  int getRow() { return currentRow;}
+
   void setNumFrames(unsigned val) { numFrames = val;} 
   void setAnimationSpeed(unsigned val) { animationSpeed = val;} 
 

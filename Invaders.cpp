@@ -77,12 +77,15 @@ void Invaders::moveInvaders()
 
   checkIfShiftDown();//check if need to move down
   
-   for (size_t y = 0; y < 5; y++)
+  for (size_t y = 0; y < 5; y++)
   {
     for (size_t x = 0; x < 11; x++)
     {
-      if (moveLeft) invaders[x][y]->setPositionX(invaders[x][y]->getPosition().getX()-shiftSidewaysBy);
-      else invaders[x][y]->setPositionX(invaders[x][y]->getPosition().getX()+shiftSidewaysBy); //else move right
+      if (invaders[x][y] != nullptr)
+      {
+        if (moveLeft) invaders[x][y]->setPositionX(invaders[x][y]->getPosition().getX()-shiftSidewaysBy);
+        else invaders[x][y]->setPositionX(invaders[x][y]->getPosition().getX()+shiftSidewaysBy); //else move right
+      }
     }
   }
 }
@@ -117,7 +120,7 @@ void Invaders::checkIfShiftDown()
   ///MOVE RIGHT
   else //if (!moveLeft) //moving right
   {
- //get furthest col on right that has a surviving invader
+    //get furthest col on right that has a surviving invader
     int furthestRightColumn = -1;
     for (size_t i = 10; i < numSurvivingInEachCol.size(); i--)
     {
@@ -146,13 +149,16 @@ void Invaders::checkIfShiftDown()
     {
       for (size_t x = 0; x < 11; x++)
       {
-        invaders[x][y]->setPositionY(invaders[x][y]->getPosition().getY()+shiftDownBy);
-
-        //todo: if at player pos then lose
-        if (invaders[x][y]->getPosition().getY() >= playerPosY)
+        if (invaders[x][y] != nullptr)
         {
-          //lose
-          return;
+          invaders[x][y]->setPositionY(invaders[x][y]->getPosition().getY()+shiftDownBy);
+
+          //todo: if at player pos then lose
+          if (invaders[x][y]->getPosition().getY() >= playerPosY)
+          {
+            //lose
+            return;
+          }
         }
       }
     }    
@@ -166,8 +172,11 @@ void Invaders::animateSprites()
   {
     for (size_t x = 0; x < 11; x++)
     {
-      if (invaders[x][y]->getFrame() == 0) invaders[x][y]->setFrame(1);
-      else invaders[x][y]->setFrame(0);
+      if (invaders[x][y] != nullptr)
+      {
+        if (invaders[x][y]->getFrame() == 0) invaders[x][y]->setFrame(1);
+        else invaders[x][y]->setFrame(0);
+      }
     }
   }
 }

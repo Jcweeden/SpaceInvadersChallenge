@@ -45,3 +45,27 @@ bool CollisionManager::isCollidingRectRect(GameObject* rectA, GameObject* rectB,
   //else, a collision
   return true;
 }
+
+//additions and subtractions represent white space within the bullet and invader sprites
+//this is not adjusted for within the use of GameObject width and heights
+bool CollisionManager::isCollidingBulletInvader(GameObject* rectA, GameObject* rectB)
+{
+  //if the bottom of rectA is lower than the top of rectB - no collision
+  if((rectA->getPosition().getY()-8 + rectA->getHeight()-8) <= rectB->getPosition().getY()+13)
+  { return false; }
+    
+  //if the top of rectA is higher than the bottom of rectB - no collision
+  if(rectA->getPosition().getY()+13  >= (rectB->getPosition().getY()-8 + rectB->getHeight()-8))
+  { return false; }
+    
+  //if the right of rectA does not meet the left of rectB - no collision
+  if((rectA->getPosition().getX() + rectA->getWidth())-20 <= rectB->getPosition().getX())
+  { return false; }
+    
+  //if the left of rectA is further away than the right of rectB - no collision
+  if(rectA->getPosition().getX()+20 >= (rectB->getPosition().getX() + rectB->getWidth()))
+  { return false; }
+    
+  //else, a collision
+  return true;
+}

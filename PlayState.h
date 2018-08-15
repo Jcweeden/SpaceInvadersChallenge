@@ -31,10 +31,14 @@ public:
   void clean();
 
   void setupLevel();
-  
+
+  void updateGameSpeed();
+
+  void addScore(unsigned val);
 public:
 
   unsigned levelNumber;
+  unsigned score;
   
   Player* player;
   Invaders* invaders;

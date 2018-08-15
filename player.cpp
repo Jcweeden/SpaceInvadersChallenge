@@ -12,13 +12,13 @@ void Player::update()
 
   if (bullet != nullptr)
   {
-    bullet->update();
-
     if (bullet->toBeDeleted)
     {
       delete bullet;
       bullet = nullptr;
     }
+    else
+      bullet->update();
   }
   
   GameObject::update();
