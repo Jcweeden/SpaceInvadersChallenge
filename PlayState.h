@@ -31,14 +31,17 @@ public:
   void clean();
 
   void setupLevel();
+  void lostGame();
 
   void updateGameSpeed();
 
   void addScore(unsigned val);
 public:
 
+  bool gameOver;
   unsigned levelNumber;
   unsigned score;
+  unsigned highScore;
   
   Player* player;
   Invaders* invaders;

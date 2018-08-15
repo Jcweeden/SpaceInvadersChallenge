@@ -31,7 +31,16 @@ void Player::draw()
   if (bullet != nullptr) bullet->draw();
   
   GameObject::draw();
+}
 
+void Player::clean()
+{
+  if (bullet != nullptr)
+  {
+    delete bullet;
+  }
+  
+  GameObject::clean();
 }
 
 void Player::handleInput()

@@ -17,6 +17,7 @@ public:
 
   virtual void update();
   virtual void draw();
+  virtual void clean();
   void handleInput();
   
 public:

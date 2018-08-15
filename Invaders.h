@@ -9,8 +9,9 @@
 #include <vector>
 #include <iostream>
 
-class Invaders {
+class EnemyProjectile;
 
+class Invaders {
 public:
   Invaders(unsigned rowNumber, unsigned playerY);
   
@@ -26,11 +27,18 @@ public:
   void animateSprites();
 
   Enemy* getBottomInvaderInColumn(unsigned colIndex);
+
+
+  void shoot(unsigned colIndexToShootFrom);
+  void shootFromRandomColumn();
+  void shootAtPlayer();
   
 public:
 
   std::vector<std::vector<Enemy*> > invaders;
 
+  std::vector<EnemyProjectile*> enemyBullets;
+  
   std::vector<int> numSurvivingInEachCol;
   
   unsigned numInvadersRemaining;

@@ -1,4 +1,5 @@
 #include "Invaders.h"
+#include "EnemyProjectile.h"
 
 
 Invaders::Invaders(unsigned rowNumber, unsigned playerY)
@@ -11,7 +12,6 @@ Invaders::Invaders(unsigned rowNumber, unsigned playerY)
 
 void Invaders::setupInvaders(unsigned startingRow)
 {
-  std::cout << "setting up invaders\n";
   //variables holding starting position of the swarm
   int startPosX = 96;
   int startPosY = 160;
@@ -40,16 +40,51 @@ void Invaders::setupInvaders(unsigned startingRow)
       invaders[x][y] = newInvader;
     }
   }
-  std::cout << "setup invaders\n";
 }
 
 void Invaders::update()
 {
-  //shoot stufff
+  if (numInvadersRemaining > 0 )
+  {
+    if (enemyBullets.size() == 0)
+    {
+      //either fire randomly, or fire closest to player, with 50/50 chance
+      int randFireIndex = rand() % 2;
+      
+      if (randFireIndex == 0)
+      {
+        shootFromRandomColumn(); //fire randomly
+      }
+      else
+      {
+        shootAtPlayer(); //fire at player
+      }
+    }
+    else
+    {
+      //update bullets
+      for (size_t i = 0; i < enemyBullets.size(); i++)
+      {
+        enemyBullets[i]->update();
+
+        if (enemyBullets[i]->toBeDeleted)
+        {
+          delete enemyBullets[i];
+          enemyBullets.erase(enemyBullets.begin()+i);
+        }
+      }
+    }
+  }
 }
 
 void Invaders::draw()
 {
+  //update bullets
+  for (EnemyProjectile* proj : enemyBullets)
+  {
+    proj->draw();
+  }
+      
   for (size_t y = 0; y < 5; y++)
   {
     for (size_t x = 0; x < 11; x++)
@@ -61,6 +96,13 @@ void Invaders::draw()
 
 void Invaders::clean()
 {
+  for (size_t i = 0; i < enemyBullets.size(); i++)
+  {
+    delete enemyBullets[i];
+  }
+
+
+  
   for (size_t y = 0; y < 5; y++)
   {
     for (size_t x = 0; x < 11; x++)
@@ -190,4 +232,32 @@ Enemy* Invaders::getBottomInvaderInColumn(unsigned colIndex)
   }
   //none found
   return nullptr;
+}
+
+
+void Invaders::shoot(unsigned colIndexToShootFrom)
+{
+  Vector2D spawnPos = getBottomInvaderInColumn(colIndexToShootFrom)->getPosition();
+  
+  EnemyProjectile* proj = new EnemyProjectile(spawnPos.getX(), spawnPos.getY());
+  enemyBullets.push_back(proj);
+}
+
+
+void Invaders::shootFromRandomColumn()
+{
+  unsigned randColumnIndex;
+
+  //get a column that contains at least one invader 
+  do {
+    randColumnIndex = rand() % 11;
+  } while (numSurvivingInEachCol[randColumnIndex] == 0);
+  
+  shoot(randColumnIndex);
+}
+
+
+void Invaders::shootAtPlayer()
+{
+
 }

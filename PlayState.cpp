@@ -19,7 +19,7 @@ PlayState* PlayState::Instance()
 }
 
 PlayState::PlayState() //1000 in ms
-    : score(0), player(nullptr), invaders(nullptr), levelNumber(1), timeBetweenInvadersMove(1000), lastFrameTicks(0)
+    : score(0), highScore(0), player(nullptr), invaders(nullptr), levelNumber(1), timeBetweenInvadersMove(1000), lastFrameTicks(0), gameOver(false)
 {
   TheTextureManager::Instance()->load("Assets/spaceInvaderSprites.png", "spaceInvaders", TheGame::Instance()->getRenderer());
 
@@ -28,41 +28,63 @@ PlayState::PlayState() //1000 in ms
 
 void PlayState::setupLevel()
 {
+  std::cout << "setupLevel()\n";
+  gameOver = false;
+  score = 0;
   clean();
   player = new Player(32,450,1,9,0);
   invaders = new Invaders(levelNumber, player->getPosition().getY());
   countDownTimerToNextInvadersMove = timeBetweenInvadersMove = 1000;
+  std::cout << "setupLevel() complete\n";
+}
+
+void PlayState::lostGame()
+{
+  std::cout << "lostGame()\n";
+  if (score > highScore) highScore = score;
+  levelNumber = 1;
+  setupLevel();
 }
 
 void PlayState::update()
 {
-  invaders->update();
-  player->update();
-
+  std::cout << "update()\n";
+  
   countDownTimerToNextInvadersMove -= SDL_GetTicks() - lastFrameTicks;
   
   //if has surpassed time
   if (countDownTimerToNextInvadersMove <= 0)
   {
-    invaders->moveInvaders();
+    if (!gameOver && invaders != nullptr)
+      invaders->moveInvaders();
 
     countDownTimerToNextInvadersMove = timeBetweenInvadersMove;
   }
+
+  if (invaders != nullptr)
+  invaders->update();
+  
+  if (player != nullptr)
+    player->update();
+  
   lastFrameTicks = SDL_GetTicks();
+  std::cout << "update() complete\n";
 }
 
 void PlayState::render()
 {
-  invaders->draw();
+  if (invaders != nullptr)
+    invaders->draw();
+
+  if (player != nullptr)
   player->draw();
 }
 
 
 void PlayState::handleInput()
 {
-
-  player->handleInput();
-
+  if (!gameOver)
+    player->handleInput();
 }
 
 void PlayState::clean()
@@ -73,7 +95,11 @@ void PlayState::clean()
     delete invaders;
   }
   
-  if (player != nullptr) delete player;
+  if (player != nullptr)
+  {
+    player->clean();
+    delete player;
+  }
 }
 
 
