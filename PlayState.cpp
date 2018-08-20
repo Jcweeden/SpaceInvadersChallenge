@@ -60,6 +60,16 @@ void PlayState::nextLevel()
   clean();
   player = new Player(80,441,1,9,0);
   invaders = new Invaders(levelNumber, player->getPosition().getY());
+  
+  Barricade* barricade0 = new Barricade(100,390);
+  barricades.push_back(barricade0);
+  Barricade* barricade1 = new Barricade(200,390);
+  barricades.push_back(barricade1);
+  Barricade* barricade2 = new Barricade(300,390);
+  barricades.push_back(barricade2);
+  Barricade* barricade3 = new Barricade(400,390);
+  barricades.push_back(barricade3);
+  
   countDownTimerToNextInvadersMove = timeBetweenInvadersMove = 1000; 
 }
 
